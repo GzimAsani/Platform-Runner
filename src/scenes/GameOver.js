@@ -15,31 +15,31 @@ export default class GameOver extends Phaser.Scene {
   }
 
   create() {
-    this.add.text(this.scare.width * 0.6, this.scale.height * 0.1, 'Game Over :(', {fontSize: 50, color: '#f00'}).setOrigin();
-
-    this.add.text(this.scale.width * 0.6, this.scale.height * 0.2, `Total points: ${this.finalScore}`, {fontSize: 28}).setOrigin();
-
-    const ressetButton = this.add.image(this.scale.width * 0.5, this.scale.height * 0.7, 'reset').setScale(0.5);
-    ressetButton.setInteractive({ useHandCursor: true});
-    ressetButton.on('pointerdown', () => {
+    // add text
+    this.add.text(this.scale.width * 0.5, this.scale.height * 0.1, 'Game Over', { fontSize: 48, color: '#f00' }).setOrigin();
+    this.add.text(this.scale.width * 0.5, this.scale.height * 0.2, `Final score: ${this.finalScore}`, { fontSize: 24 }).setOrigin();
+    // reset button
+    const resetButton = this.add.image(this.scale.width * 0.5, this.scale.height * 0.5, 'reset').setScale(0.5);
+    resetButton.setInteractive({ useHandCursor: true });
+    resetButton.on('pointerdown', () => {
       this.scene.start('game');
     });
-
+    // submit score
     const form = document.createElement('form');
     form.innerHTML = `
-    <input type="text" name="name" placeholder="Your name" required minLength="3" maxLength="10" autofocus/>
-    <button type="submit">Submit</button>
+      <input type="text" name="name" placeholder="Enter your name" required minLength="3" maxLength="10" autofocus/>
+      <button type="submit">Submit</button>
     `;
-    form.addEventListener('submit', a => {
-      a.preventDefault();
+    form.addEventListener('submit', e => {
+      e.preventDefault();
       const user = document.querySelector('input[name="name"]').value;
       postScores(user, this.finalScore, url)
-      .then(() => {
-        this.scene.start('leaderboard')
-      })
-      .catch(() => {
-        this.add.text(this.scale.width * 0.6, this.scale.height * 0.9, 'Check your internet. Please try again').setOrigin();
-      });
+        .then(() => {
+          this.scene.start('leaderboard');
+        })
+        .catch(() => {
+          this.add.text(this.scale.width * 0.5, this.scale.height * 0.8, 'Network Error. Please try again later.').setOrigin();
+        });
     });
     this.add.dom(this.scale.width * 0.5, this.scale.height * 0.3, form);
   }

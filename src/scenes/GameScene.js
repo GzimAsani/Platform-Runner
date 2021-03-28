@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import Gold from '../lib/Gold';
 import GameKiller from '../lib/GameKiller';
 
-export default class GameScene extends Phaser.scene {
+export default class GameScene extends Phaser.Scene {
   constructor() {
     super('game');
   }
@@ -12,59 +12,61 @@ export default class GameScene extends Phaser.scene {
   }
 
   preload() {
-    this.load.image('background', 'assets/background.png');
+    this.load.image('sky', 'assets/background.png');
     this.load.image('ground', 'assets/ground.png');
-    this.load.spritesheet('panda', 'assets/dude.png', { frameWidth: 32, frameHeight: 32 });
-    this.load.image('gold', 'assets/gold.png');
-    this.load.image('spikes', 'assets/spikes.png');
+    this.load.image('star', 'assets/gold.png');
+    this.load.image('staticKiller', 'assets/spikes.png');
+    this.load.spritesheet('dude',
+      'assets/dude.png',
+      { frameWidth: 32, frameHeight: 48 });
   }
 
   create() {
     this.add.image(400, 300, 'background').setScrollFactor(0, 1);
-    this.coins = this.physics.add.group({ classType: Gold });
-    this.spikes = this.physics.add.group({ classType: GameKiller});
-
+    this.stars = this.physics.add.group({ classType: Gold });
+    this.staticKillers = this.physics.add.group({ classType: GameKiller });
+    // platforms
     this.platforms = this.physics.add.staticGroup();
-    this.platforms.create(100, this.scale.height + 150, 'ground').setScale(0.5).refreshBody();
-    this.platforms.create(400, this.scale.height, 'ground').setScale(0.5).refreshBody();
-    this.platforms.create(800, this.scale.height - 150, 'ground').setScale(0.5).refreshBody();
-    // setup coins and spikes initially
+    this.platforms.create(100, this.scale.height + 150, 'ground').setScale(1.0).refreshBody();
+    this.platforms.create(400, this.scale.height, 'ground').setScale(1.0).refreshBody();
+    this.platforms.create(800, this.scale.height - 150, 'ground').setScale(1.0).refreshBody();
+    // setup stars and staticKiller
     this.platforms.children.iterate(platform => {
-    this.addGold(platform);
-    this.addGameKillers(platform);
+      this.addStarAbove(platform);
+      this.addStaticKillerAbove(platform);
     });
-
-    // player & movement frames
+    // logic for player movement
     this.player = this.physics.add.sprite(100, 450, 'dude');
     this.anims.create({
       key: 'left',
-      frames: this.anims.generateFrameNumbers('dude', { start: 9, end: 11 }),
+      frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
       frameRate: 10,
       repeat: -1,
     });
     this.anims.create({
       key: 'right',
-      frames: this.anims.generateFrameNumbers('dude', { start: 6, end: 8 }),
+      frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
       frameRate: 10,
       repeat: -1,
     });
     this.anims.create({
       key: 'turn',
-      frames: [{ key: 'dude', frame: 0 }],
+      frames: [{ key: 'dude', frame: 4 }],
+      frameRate: 20,
     });
-  
+    // physics interactions
     this.physics.add.collider(this.player, this.platforms);
-    this.physics.add.collider(this.platforms, this.coins);
-    this.physics.add.collider(this.platforms, this.spikes);
+    this.physics.add.collider(this.platforms, this.stars);
+    this.physics.add.collider(this.platforms, this.staticKillers);
     this.physics.add.overlap(
       this.player,
-      this.coins,
-      this.getGold,
+      this.stars,
+      this.collectStar,
       undefined,
       this,
     );
     this.physics.add.overlap(this.player,
-      this.spikes,
+      this.staticKillers,
       () => {
         this.scene.start('game-over', { score: this.score });
       },
@@ -81,17 +83,17 @@ export default class GameScene extends Phaser.scene {
   }
 
   update() {
-    // reuse platforms
+    // recycle platforms
     this.platforms.children.iterate(platform => {
       const { scrollX } = this.cameras.main;
       if (platform.x <= scrollX - 100) {
         platform.x = scrollX + 900;
         platform.refreshBody();
-        this.addGold(platform);
-        this.addGameKillers(platform);
+        this.addStarAbove(platform);
+        this.addStaticKillerAbove(platform);
       }
     });
-    // player motion and animations
+    // player control using keyboard
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-160);
 
@@ -107,7 +109,7 @@ export default class GameScene extends Phaser.scene {
     }
 
     if (this.cursors.up.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-350);
+      this.player.setVelocityY(-330);
     }
 
     if (this.player.y >= 800) {
@@ -115,35 +117,35 @@ export default class GameScene extends Phaser.scene {
     }
   }
 
-  addGold(sprite) {
+  // add a star above a platform
+  addStarAbove(sprite) {
     const y = sprite.y - sprite.displayHeight;
-    const coin = this.coins.get(Phaser.Math.Between(sprite.x - 60, sprite.x), y, 'gold');
-    coin.setActive(true);
-    coin.setVisible(true);
-    this.add.existing(coin);
-    coin.body.setSize(coin.width, coin.height);
-    this.physics.world.enable(coin);
-    return coin;
+    const star = this.stars.get(Phaser.Math.Between(sprite.x - 10, sprite.x), y, 'star');
+    star.setActive(true);
+    star.setVisible(true);
+    this.add.existing(star);
+    star.body.setSize(star.width, star.height);
+    this.physics.world.enable(star);
+    return star;
   }
 
-  // collect coin and increase score
-  getGold(_player, coin) {
-    this.coins.killAndHide(coin);
-    this.physics.world.disableBody(coin.body);
+  // collect star and increase score
+  collectStar(_player, star) {
+    this.stars.killAndHide(star);
+    this.physics.world.disableBody(star.body);
     this.score += 10;
     this.scoreText.text = `Score: ${this.score}`;
   }
 
-  // add a coin above a platform
-  addGameKillers(sprite) {
+  // add a staticKiller above a platform
+  addStaticKillerAbove(sprite) {
     const y = sprite.y - sprite.displayHeight;
-    const spike = this.spikes.get(Phaser.Math.Between(sprite.x + 10, sprite.x + 60), y, 'GameKillsers');
-    spike.setActive(true);
-    spike.setVisible(true);
-    this.add.existing(spike);
-    spike.body.setSize(spike.width, spike.height);
-    this.physics.world.enable(spike);
-    return spike;
+    const staticKiller = this.staticKillers.get(Phaser.Math.Between(sprite.x + 10, sprite.x + 60), y, 'staticKiller');
+    staticKiller.setActive(true);
+    staticKiller.setVisible(true);
+    this.add.existing(staticKiller);
+    staticKiller.body.setSize(staticKiller.width, staticKiller.height);
+    this.physics.world.enable(staticKiller);
+    return staticKiller;
   }
-
 }

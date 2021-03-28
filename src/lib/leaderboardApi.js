@@ -1,12 +1,11 @@
-import { response } from "express";
-
-export const url = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/d98c5795/scores';
+// Result of creating game: {"result":"Game with ID: IeWR2bb5qDryHD6KKs3d added."}
+export const url = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/IeWR2bb5qDryHD6KKs3d/scores';
 
 const handleErrors = (response) => {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
-  return response
+  return response;
 };
 
 export const getScores = (url) => fetch(url)
@@ -14,16 +13,17 @@ export const getScores = (url) => fetch(url)
   .then(response => response.json())
   .then(data => {
     if (data.result.length === 0) {
-      throw new Error()
+      throw new Error();
     }
-    return data.result.sort((x, y) => x.score = y.score);
+    return data.result.sort((a, b) => b.score - a.score);
   });
 
-  export const postScores = (user, score, url) => fetch(url, {
-    method: 'Post',
+export const postScores = (user, score, url) => fetch(url,
+  {
+    method: 'POST',
     mode: 'cors',
-    headers: 
-      {'Content-type': 'application/json'},
+    headers:
+      { 'Content-Type': 'application/json' },
     body: JSON.stringify({ user, score }),
   })
   .then(handleErrors);
