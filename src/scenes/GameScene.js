@@ -14,7 +14,7 @@ export default class GameScene extends Phaser.scene {
   preload() {
     this.load.image('background', 'assets/background.png');
     this.load.image('ground', 'assets/ground.png');
-    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 42});
+    this.load.spritesheet('panda', 'assets/dude.png', { frameWidth: 32, frameHeight: 32 });
     this.load.image('gold', 'assets/gold.png');
     this.load.image('spikes', 'assets/spikes.png');
   }
@@ -38,19 +38,19 @@ export default class GameScene extends Phaser.scene {
     this.player = this.physics.add.sprite(100, 450, 'dude');
     this.anims.create({
       key: 'left',
-      frames: this.anims.generateFrameNumbers('panda', { start: 9, end: 11 }),
+      frames: this.anims.generateFrameNumbers('dude', { start: 9, end: 11 }),
       frameRate: 10,
       repeat: -1,
     });
     this.anims.create({
       key: 'right',
-      frames: this.anims.generateFrameNumbers('panda', { start: 6, end: 8 }),
+      frames: this.anims.generateFrameNumbers('dude', { start: 6, end: 8 }),
       frameRate: 10,
       repeat: -1,
     });
     this.anims.create({
       key: 'turn',
-      frames: [{ key: 'panda', frame: 0 }],
+      frames: [{ key: 'dude', frame: 0 }],
     });
   
     this.physics.add.collider(this.player, this.platforms);
@@ -137,7 +137,7 @@ export default class GameScene extends Phaser.scene {
   // add a coin above a platform
   addGameKillers(sprite) {
     const y = sprite.y - sprite.displayHeight;
-    const spike = this.spikes.get(Phaser.Math.Between(sprite.x + 10, sprite.x + 60), y, 'spikes');
+    const spike = this.spikes.get(Phaser.Math.Between(sprite.x + 10, sprite.x + 60), y, 'GameKillsers');
     spike.setActive(true);
     spike.setVisible(true);
     this.add.existing(spike);
