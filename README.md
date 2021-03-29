@@ -26,7 +26,7 @@ You need a keyboard to control the panda.
 |-------------------------------------------|---------------------------------------|
 |![panda](./dist/assets/dude.png)           |Dude spritesheet to animate the player |
 |![platform](./dist/assets/ground.png)      |Platform that the player can jump on   |
-|![background](./dist/assets/background.png)|Background image                       |
+|![background](./dist/assets/background.jpg)|Background image                       |
 |![gold coin](./dist/assets/gold.png)       |Gold coins for collection              |
 |![spikes](./dist/assets/spikes.png)        |Spikes that the player needs to avoid  |
 
@@ -66,4 +66,17 @@ Run `npm start` to view the game in your default browser.
 
 Run `npm test` to run the tests.
 
-## Authors
+## Author
+
+👤 **Gzim Asani**
+- Github: [@GzimAsani](https://github.com/GzimAsani)
+- Linkedin: [GzimAsani](https://www.linkedin.com/in/gzim-asani-83390a17a/)
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+
+
+## Show your support
+
+Give a ⭐️ if you like this project!
