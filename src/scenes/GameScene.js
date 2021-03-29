@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import Gold from '../lib/Gold';
+import Gold from '../lib/Point';
 import GameKiller from '../lib/GameKiller';
 
 export default class GameScene extends Phaser.Scene {
