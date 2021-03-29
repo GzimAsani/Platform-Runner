@@ -12,7 +12,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sky', 'assets/background.jpeg');
+    this.load.image('background', 'assets/background.jpg');
     this.load.image('ground', 'assets/ground.png');
     this.load.image('star', 'assets/gold.png');
     this.load.image('staticKiller', 'assets/spikes.png');

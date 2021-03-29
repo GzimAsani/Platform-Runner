@@ -15,7 +15,7 @@ const config = {
     },
   },
   scene: [WelcomeScene, GameScene, GameOver, LeaderBoardScene],
-  // lets u add dom stuff via phaser
+
   parent: '#container',
   dom: {
     createContainer: true,
