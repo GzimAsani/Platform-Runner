@@ -12,7 +12,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sky', 'assets/background.png');
+    this.load.image('sky', 'assets/background.jpeg');
     this.load.image('ground', 'assets/ground.png');
     this.load.image('star', 'assets/gold.png');
     this.load.image('staticKiller', 'assets/spikes.png');
@@ -78,7 +78,7 @@ export default class GameScene extends Phaser.Scene {
     this.cameras.main.setDeadzone(0, this.scale.height * 1.5);
     // scores
     this.scoreText = this.add.text(10, 10, 'Score: 0',
-      { color: '#000', fontSize: 24 })
+      { color: '#FF0000', fontSize: 24 })
       .setScrollFactor(0);
   }
 

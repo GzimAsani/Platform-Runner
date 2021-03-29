@@ -7,7 +7,7 @@ export default class LeaderBoardScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.text(this.scale.width * 0.5, 30, 'LeaderBoard', {fontSize: 56, color: '#00b3ff' })
+    this.add.text(this.scale.width * 0.5, 30, 'LeaderBoard', {fontSize: 56, color: '#FF7F50' })
       .setOrigin();
       getScores(url)
       .then((data) => {
@@ -24,7 +24,7 @@ export default class LeaderBoardScene extends Phaser.Scene {
       .catch(() => {
         this.add.text(this.scale.width * 0.5, this.scale.height * 0.5, 'Internet Problems. Please try again later.').setOrigin();
       });
-    this.add.text(this.scale.width * 0.5, this.scale.height * 0.9, 'Press SPACE to play.', { fontSize: 24, color: '#00b3ff' }).setOrigin();
+    this.add.text(this.scale.width * 0.5, this.scale.height * 0.9, 'Press SPACE to play.', { fontSize: 24, color: '#FF7F50' }).setOrigin();
     // setup new game
     this.input.keyboard.once('keydown-SPACE', () => {
       this.scene.start('game');

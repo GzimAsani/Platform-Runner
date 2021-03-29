@@ -11,10 +11,8 @@ export default class WelcomeScene extends Phaser.Scene {
   }
 
   create() {
-    // logo
-    this.add.image(50, 80, 'logo').setScale(0.5);
     // title
-    this.add.text(this.scale.width * 0.5, 80, 'Panda Runner', { fontSize: 70, color: '#1babab' }).setOrigin();
+    this.add.text(this.scale.width * 0.5, 80, 'Platform Runner', { fontSize: 70, color: '#FF7F50' }).setOrigin();
     // start button
     const startButton = this.add.image(this.scale.width * 0.5, this.scale.height * 0.5, 'start').setScale(0.6);
     startButton.setInteractive({ useHandCursor: true });
@@ -28,6 +26,6 @@ export default class WelcomeScene extends Phaser.Scene {
       this.scene.start('leaderboard');
     });
     // credits
-    this.add.text(this.scale.width * 0.5, this.scale.height - 100, 'Created by: Gzim Asani', { fontSize: 24, color: '#1babab' });
+    this.add.text(this.scale.width * 0.3, this.scale.height - 100, 'Created by: Gzim Asani', { fontSize: 24, color: '#FF7F50' });
   }
 }
