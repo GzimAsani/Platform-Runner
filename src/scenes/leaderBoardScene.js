@@ -7,9 +7,9 @@ export default class LeaderBoardScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.text(this.scale.width * 0.5, 30, 'LeaderBoard', {fontSize: 56, color: '#FF7F50' })
+    this.add.text(this.scale.width * 0.5, 30, 'LeaderBoard', { fontSize: 56, color: '#FF7F50' })
       .setOrigin();
-      getScores(url)
+    getScores(url)
       .then((data) => {
         const sortedData = data;
         for (let i = 0; i < 5; i += 1) {
