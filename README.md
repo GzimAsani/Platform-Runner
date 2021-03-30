@@ -39,7 +39,7 @@ You need a keyboard to control the panda.
 
 ## Live Demo
 
-[screenshot](https://nifty-hawking-f25f2d.netlify.app/)
+[Live link](https://nifty-hawking-f25f2d.netlify.app/)
 
 ## Getting Started
 
