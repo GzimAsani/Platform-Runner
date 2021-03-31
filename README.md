@@ -1,6 +1,6 @@
 # Platform Runner
 
-> In this game, your goal is to collect as many points as possible before you fall from the platform or hurt yourself from the spikes
+> In this game, your goal is to collect as many points as possible before you fall from the platform or hurt yourself from the spikes. In the end the user can compare itself with other players in the leaderboard
 
 ![screenshot](./dist/assets/readmee.png)
 
